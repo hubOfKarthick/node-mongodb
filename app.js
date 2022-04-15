@@ -15,11 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const mongodb = require('./app/models');
-mongodb.mongooseConfig.connect(db.url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+mongodb.mongoose.connect(mongodb.url, {
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
 }).then((data) => {
-  console.log('Connected to database!', data);
+  console.log('Connected to database!');
 }).catch((err) => {
   console.error(err, 'Cant connect to database!');
   process.exit();
@@ -27,9 +27,11 @@ mongodb.mongooseConfig.connect(db.url, {
 
 // node connection
 app.get("/", (req, res) => {
+  // console.log(req);
   res.json({ message: "Welcome to NODE!" });
 });
 
+require('./app/routes/app.routes.js')(app);
 // port configuration
 const port = 3000;
 app.listen(port, () => {
