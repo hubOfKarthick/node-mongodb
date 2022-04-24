@@ -2,7 +2,6 @@ const db = require("../models");
 const Stories = db.stories;
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-    console.log(req);
     if (!req.body.title) {
         res.status(400).send({ message: "Title cannot be empty!" });
         return;
@@ -34,17 +33,15 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? {title : { $regex: new RegExp(title), $options: 'i' }} :  {};
-    
     Stories.find(condition)
-    .then(data => {
-        res.send(data, condition);
-    })
-    .catch(err => {
-        console.log('am i in the erro finda all', err);
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
         res.status(500).send({
-            message: err.message || 'Server Error'
+          message: "Server Error",
         });
-    });
+      });
 };
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
@@ -105,7 +102,7 @@ exports.delete = (req, res) => {
             }
             else {
                 res.send({
-                    message: 'Data deleted succesfully'
+                    message: 'Data deleted successfully'
                 });
             }
         }).catch(err => {
